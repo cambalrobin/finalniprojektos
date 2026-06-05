@@ -87,6 +87,17 @@
             placeholder: "Klikněte pro výběr nebo vyhledávání...",
             allowClear: true
         });
+
+        // Automatické předvyplnění konce závodu podle startu
+        $('#start_date').on('change', function() {
+            let startDateValue = $(this).val();
+            
+            // Nastaví stejné datum do konce závodu
+            $('#end_date').val(startDateValue);
+            
+            // Dynamicky upraví minimální datum pro konec závodu, aby nešel vybrat dřívější den než start
+            $('#end_date').attr('min', startDateValue);
+        });
     });
 </script>
 <?= $this->endSection() ?>
