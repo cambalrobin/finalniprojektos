@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "flag-icons": "^7.5.0",
+    "jquery": "^3.4.1",
+    "select2": "^4.0.13"
+  }
+}
