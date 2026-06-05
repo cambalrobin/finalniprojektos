@@ -16,7 +16,7 @@
     <a href="<?= previous_url() ?>" class="btn btn-dark mb-3">Zpět</a>
 
     <div class="row">
-        <form action="<?= base_url('index.php/form-helper/races/create') ?>" method="post" enctype="multipart/form-data">
+        <?= form_open_multipart('form-helper/races/create', ['class' => 'row']) ?>
             <div class="col-md-10">
                 
                 <div class="mb-3">
@@ -69,19 +69,18 @@
 
                 <div class="mb-3">
                     <label for="logo" class="form-label">Logo závodu</label>
-                    <input type="file" name="logo" class="form-control" id="logo" accept=".jpg, .jpeg, .png"> 
+                    <input type="file" name="logo" class="form-control" id="logo" accept=".jpg, .png">
                 </div>
 
                 <button type="submit" class="btn btn-dark mt-3">Uložit závod</button>
                 
             </div>
-        </form>
+        <?= form_close() ?>
     </div>
 </div>
 
 <script>
     $(document).ready(function () {
-        // Inicializujeme Select2 POUZE pro výběr závodu, ročníku si nevšímá
         $('#id_race').select2({
             width: '100%',
             placeholder: "Klikněte pro výběr nebo vyhledávání...",

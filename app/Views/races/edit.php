@@ -1,4 +1,4 @@
-Skvělá trefa. Ta chyba vznikla proto, že tvůj helper form_dropdown_bs má úplně jiné pořadí parametrů, než jsme předpokládali. Podle té chybové hlášky (řádky 141–147) je pořadí parametrů takovéto:$name (string)$options (array)$attributes (array) $\rightarrow$ Tady to spadlo, protože jsem tam poslal string s vybranou kategorií.$wrapperClass (string)$label (string)$selected (mixed) $\rightarrow$ Až sem musíme tu vybranou kategorii správně usadit.Pojďme to dát dohromady přesně tak, jak požaduje zadání: budeme upravovat ročník (dropdownem), název závodu, datum začátku a konce, kategorii (dropdownem) a logo.Zde je upravený kód, kde je pořadí parametrů v helperu opravené a ročník předělaný na dropdown.1. Kompletní opravený edit.phpPHP<?= $this->extend('layout/template') ?>
+<?= $this->extend('layout/template') ?>
 
 <?= $this->section('content') ?>
 <?php
@@ -13,7 +13,7 @@ Skvělá trefa. Ta chyba vznikla proto, že tvůj helper form_dropdown_bs má ú
     <a href="<?= base_url('index.php/rocnik/' . $country->year) ?>" class="btn btn-dark mb-3">Zpět</a>
 
     <div class="row">
-        <form action="<?= base_url('index.php/form-helper/races/update/' . $country->id) ?>" method="post" enctype="multipart/form-data">
+        <?= form_open_multipart('form-helper/races/update/' . $country->id, ['class' => 'row']) ?>
             <div class="col-md-10">
 
                 <?= form_dropdown_bs(
@@ -66,12 +66,12 @@ Skvělá trefa. Ta chyba vznikla proto, že tvůj helper form_dropdown_bs má ú
                 <?= form_input_bs("end_date", $atributyKonec, "Datum konce závodu", "date") ?>
 
                 <?= form_dropdown_bs(
-                    "category",                        // 1. $name
-                    $kategorie,                        // 2. $options
-                    ['class' => 'form-select'],        // 3. $attributes (musí být pole)
-                    'mb-3',                            // 4. $wrapperClass
-                    "Kategorie Závodů",                // 5. $label
-                    $country->category                 // 6. $selected (aktuální hodnota z DB)
+                    "category",                      
+                    $kategorie,                       
+                    ['class' => 'form-select'],        
+                    'mb-3',                          
+                    "Kategorie Závodů",               
+                    $country->category                 
                 ) ?>
 
                 <div class="mb-3">
@@ -81,7 +81,7 @@ Skvělá trefa. Ta chyba vznikla proto, že tvůj helper form_dropdown_bs má ú
                             <small class="text-muted">Aktuální logo: <?= esc($country->logo) ?></small>
                         </div>
                     <?php endif; ?>
-                    <input type="file" name="logo" class="form-control" id="logo" accept=".jpg, .jpeg, .png"> 
+                    <input type="file" name="logo" class="form-control" id="logo" accept="image/*"> 
                 </div>
 
                 <?= form_hidden('_method', 'PUT') ?>
@@ -89,7 +89,7 @@ Skvělá trefa. Ta chyba vznikla proto, že tvůj helper form_dropdown_bs má ú
                 
                 <button type="submit" class="btn btn-primary mt-3">Uložit změny</button>
             </div>
-        </form>
+        <?= form_close() ?>
     </div>
 </div>
 
