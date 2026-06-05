@@ -3,8 +3,8 @@
 <?= $this->section('content') ?>
 
 <div class="container mt-4">
-    <h1>Závody pro rok <?= esc($rok) ?></h1>
-    <?= anchor('/', 'Zpět na přehled roků', ['class' => 'btn btn-secondary mb-3']) ?>
+    <h1 class="text-center">Závody pro rok <?= esc($rok) ?></h1>
+    <?= anchor('/', 'Zpět na přehled roků', ['class' => 'btn btn-dark mb-3']) ?>
     <?= anchor('form-helper/races/add/' . $rok, 'Přidat závod do roku ' . esc($rok), ['class' => 'btn btn-dark mb-3']) ?>
 
     <?php

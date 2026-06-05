@@ -8,7 +8,7 @@
 ?>
 <div class="container mt-4">
     <a href="<?= previous_url() ?>" class="btn btn-dark mb-3">Zpět</a>
-    <h3 class="text-center"><?= esc($race->real_name) ?></h3>
+    <h2 class="text-center"><?= esc($race->real_name) ?></h2>
 
     <table class="table table-bordered mt-3">
         <tr><th>Název</th>      <td><?= esc($race->real_name) ?></td></tr>

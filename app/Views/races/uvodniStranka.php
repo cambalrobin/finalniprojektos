@@ -5,7 +5,6 @@
 <h1 class="text-center">Ženské závody – přehled ročníků</h1>
 
 <div class="container mt-4">
-        <h3 class="text-center">Závody dospělých žen</h3>
         <?php
             $table = new \CodeIgniter\View\Table();
 
