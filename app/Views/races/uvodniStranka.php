@@ -5,9 +5,14 @@
 <h1 class="text-center">Ženské závody – přehled ročníků</h1>
 
 <div class="container mt-4">
+<<<<<<< HEAD
     <h3 class="text-center">Závody dospělých žen</h3>
     <?php
     $table = new \CodeIgniter\View\Table();
+=======
+        <?php
+            $table = new \CodeIgniter\View\Table();
+>>>>>>> 2d3a093103964c6c493025ca6112403d1f5f1068
 
     $table->setHeading("Rok");
 
