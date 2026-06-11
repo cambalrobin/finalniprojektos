@@ -9,7 +9,6 @@ use App\Models\RaceType;
 use App\Models\RaceYear;
 use App\Libraries\ArrayLib;
 use Config\KonfiguracniSoubor;
-// Nastaveno na přesný název tvé knihovny Upload
 use App\Libraries\Upload;
 
 class Main extends BaseController
@@ -57,6 +56,7 @@ class Main extends BaseController
     public function zavody($id)
     {
         $RaceYear = new RaceYear();
+        
         $data = [
             "race" => $RaceYear->find($id)
         ];
@@ -73,14 +73,15 @@ class Main extends BaseController
         $years2 = [$zvolenyRok => $zvolenyRok];
 
         $categories = $db->table('race_type')->distinct()->findColumn('category') ?? [];
-        $categories2 = $arrayLib->setValueToKey($categories);
+        $categories2 = $arrayLib->setValueToKey($categories); 
 
+        // ZMĚNA: Používáme getResult() místo getResultArray() pro vrácení objektů
         $zavodyV = $raceModel
             ->table('cyklo_race')
             ->select('id, default_name, type')
             ->orderBy('default_name', 'ASC')
             ->get()
-            ->getResultArray();
+            ->getResult(); 
 
         $data = [
             "kategorie" => $categories2,
@@ -96,44 +97,39 @@ class Main extends BaseController
     
 
     public function create()
-{
-    
-    $id_race     = $this->request->getPost('id_race');
-    $real_name   = $this->request->getPost('real_name');
-    $year        = $this->request->getPost('year');
-    $start_date  = $this->request->getPost('start_date');
-    $end_date    = $this->request->getPost('end_date');
-    $category    = $this->request->getPost('categories');
+    {
+        $id_race     = $this->request->getPost('id_race');
+        $real_name   = $this->request->getPost('real_name');
+        $year        = $this->request->getPost('year');
+        $start_date  = $this->request->getPost('start_date');
+        $end_date    = $this->request->getPost('end_date');
+        $category    = $this->request->getPost('categories');
 
-    // 1. Získání souboru přes getFile podle tutoriálu
-    $logoFile = $this->request->getFile('logo');
-    
-    // 2. Definování tří věcí pro upload: objekt, cesta, název
-    $uploadLib = new Upload();
-    $path = FCPATH . 'obrazky/loga';
-    $name = url_title($real_name, '-', true) . '-' . time();
+        $logoFile = $this->request->getFile('logo');
+        
+        $uploadLib = new Upload();
+        $path = FCPATH . 'obrazky/loga';
+        $name = url_title($real_name, '-', true) . '-' . time();
 
-    // Zavolání metody ze třídy pro upload
-    $uploadResult = $uploadLib->uploadFile($logoFile, $path, $name);
+        $uploadResult = $uploadLib->uploadFile($logoFile, $path, $name);
 
-    $raceModel = new RaceYear();
+        $raceModel = new RaceYear();
 
-    // 3. Info o uploadu přidat do databáze
-    $data = [
-        'id_race'    => $id_race,
-        'real_name'  => $real_name,
-        'year'       => $year,
-        'start_date' => $start_date,
-        'end_date'   => $end_date,
-        'category'   => $category,
-        'logo'       => $uploadResult['name'], // Vrací celý název z metody
-        'sex'        => 'W'
-    ];
+        $data = [
+            'id_race'    => $id_race,
+            'real_name'  => $real_name,
+            'year'       => $year,
+            'start_date' => $start_date,
+            'end_date'   => $end_date,
+            'category'   => $category,
+            'logo'       => $uploadResult['name'],
+            'sex'        => 'W'
+        ];
 
-    $raceModel->save($data);
+        $raceModel->save($data);
 
-    return redirect()->to(base_url('index.php/rocnik/' . $year));
-}
+        return redirect()->to(base_url('index.php/rocnik/' . $year));
+    }
 
     public function edit($id)
     {
@@ -144,17 +140,18 @@ class Main extends BaseController
         $zavodProEditaci = $raceYearModel->find($id);
 
         $zvolenyRok = $zavodProEditaci->year;
-        $years2 = [$zvolenyRok => $zvolenyRok];
+        $years2 = [$zvolenyRok => $zvolenyRok]; 
 
         $categories = $raceYearModel->table('race_type')->distinct()->findColumn('category') ?? [];
         $categories2 = $arrayLib->setValueToKey($categories);
 
+        // ZMĚNA: Používáme getResult() místo getResultArray() pro vrácení objektů
         $zavodyV = $raceModel
             ->table('cyklo_race')
             ->select('id, default_name, type') 
             ->orderBy('default_name', 'ASC')
             ->get()
-            ->getResultArray();
+            ->getResult(); 
 
         $data = [
             "country"   => $zavodProEditaci,
@@ -167,36 +164,32 @@ class Main extends BaseController
     }
 
     public function update($id)
-{
-    $raceYearModel = new RaceYear();
+    {
+        $raceYearModel = new RaceYear();
 
-    // Zachycení běžných políček z formuláře
-    $data = [
-        'real_name'  => $this->request->getPost('real_name'),
-        'category'   => $this->request->getPost('category'),
-        'start_date' => $this->request->getPost('start_date'),
-        'end_date'   => $this->request->getPost('end_date'),
-        'id_race'    => $this->request->getPost('id_race'),
-        'year'       => $this->request->getPost('year'),
-    ];
+        $data = [
+            'real_name'  => $this->request->getPost('real_name'),
+            'category'   => $this->request->getPost('category'),
+            'start_date' => $this->request->getPost('start_date'),
+            'end_date'   => $this->request->getPost('end_date'),
+            'id_race'    => $this->request->getPost('id_race'),
+            'year'       => $this->request->getPost('year'),
+        ];
 
-    // Získání souboru a provedení uploadu přesně podle tutoriálu
-    $logoFile = $this->request->getFile('logo');
-    
-    $uploadLib = new Upload();
-    $path = FCPATH . 'obrazky/loga';
-    $name = url_title($real_name, '-', true) . '-' . time();
+        $logoFile = $this->request->getFile('logo');
+        
+        $uploadLib = new Upload();
+        $path = FCPATH . 'obrazky/loga';
+        $name = url_title($data['real_name'], '-', true) . '-' . time(); // Opraveno volání neexistující proměnné $real_name na $data['real_name']
 
-    $uploadResult = $uploadLib->uploadFile($logoFile, $path, $name);
+        $uploadResult = $uploadLib->uploadFile($logoFile, $path, $name);
 
-    // Zápis vygenerovaného názvu do pole dat pro databázi
-    $data['logo'] = $uploadResult['name'];
+        $data['logo'] = $uploadResult['name'];
 
-    // Provedení změny v databázi
-    $raceYearModel->update($id, $data);
+        $raceYearModel->update($id, $data);
 
-    return redirect()->to(base_url('index.php/rocnik/' . $data['year']));
-}
+        return redirect()->to(base_url('index.php/rocnik/' . $data['year']));
+    }
 
     public function delete(int $id)
     {

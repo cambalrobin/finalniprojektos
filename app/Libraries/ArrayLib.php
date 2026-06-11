@@ -9,7 +9,7 @@ class ArrayLib{
         
     }
 
-    public function setValueToKey($array){
+    public function setValueToKey($array){ 
         $result = [];
         foreach($array as $row){
             $result [$row] = $row;

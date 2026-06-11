@@ -4,7 +4,7 @@
 <?php
 /** * @var stdClass $country 
  * @var array $kategorie
- * @var array $zavodyV
+ * @var object[] $zavodyV
  * @var array $rocniky2
  */
 ?>
@@ -30,9 +30,9 @@
                     <select class="form-select js-example-basic-single" id="id_race" name="id_race">
                         <option value=""></option>
                         <?php foreach($zavodyV as $race): ?>
-                            <?php $selected = ($race['id'] == $country->id_race) ? 'selected' : ''; ?>
-                            <option value="<?= $race['id'] ?>" <?= $selected ?>>
-                                <?= esc($race['default_name']) ?> (<?= esc($race['type'] ?? '') ?>)
+                            <?php $selected = ($race->id == $country->id_race) ? 'selected' : ''; ?>
+                            <option value="<?= $race->id ?>" <?= $selected ?>>
+                                <?= esc($race->default_name) ?> (<?= esc($race->type ?? '') ?>)
                             </option>
                         <?php endforeach; ?>
                     </select>
@@ -65,14 +65,7 @@
                 <?= form_input_bs("start_date", $atributyZacatek, "Datum startu závodu", "date") ?>
                 <?= form_input_bs("end_date", $atributyKonec, "Datum konce závodu", "date") ?>
 
-                <?= form_dropdown_bs(
-                    "category",                      
-                    $kategorie,                       
-                    ['class' => 'form-select'],        
-                    'mb-3',                          
-                    "Kategorie Závodů",               
-                    $country->category                 
-                ) ?>
+                <?= form_dropdown_bs("category", $kategorie, ['class' => 'form-select'], 'mb-3', "Kategorie Závodů", $country->category) ?>
 
                 <div class="mb-3">
                     <label for="logo" class="form-label">Logo závodu</label>

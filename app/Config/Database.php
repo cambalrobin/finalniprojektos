@@ -29,7 +29,7 @@ class Database extends Config
         'hostname'     => 'localhost',
         'username'     => 'root',
         'password'     => '',
-        'database'     => 'blaha',
+        'database'     => 'cambal',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => 'cyklo_',
         'pConnect'     => false,

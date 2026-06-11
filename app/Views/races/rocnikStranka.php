@@ -15,20 +15,11 @@
 
     foreach ($zavody as $row) {
         // Tlačítko pro editaci
-        $editButton = anchor(
-            'form-helper/races/edit/' . $row->id,
-            'Editovat',
-            ['class' => 'btn btn-warning btn-sm me-1']
+        $editButton = anchor('form-helper/races/edit/' . $row->id,'Editovat', ['class' => 'btn btn-warning btn-sm me-1']
         );
 
         // Tlačítko pro bezpečný Soft Delete s potvrzovacím dialogem
-        $deleteButton = anchor(
-            'form-helper/races/delete/' . $row->id,
-            'Smazat',
-            [
-                'class' => 'btn btn-danger btn-sm',
-                'onclick' => "return confirm('Opravdu chcete tento závod smazat?');"
-            ]
+        $deleteButton = anchor('form-helper/races/delete/' . $row->id, 'Smazat', ['class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Opravdu chcete tento závod smazat?');"]
         );
 
         // Přidání řádku – do sloupce akcí spojíme editaci i mazání za sebe
